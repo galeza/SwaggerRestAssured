@@ -2,16 +2,16 @@ package requests;
 
 import endpoints.PetApiEndpoint;
 import fr.galeza.example.swagger.client.model.Pet;
-import io.restassured.path.json.JsonPath;
+import io.restassured.response.ResponseBody;
 import org.apache.http.HttpStatus;
 
 import java.lang.reflect.Type;
 import java.util.function.Function;
 
-public class PostPetApiRequest extends PetApiEndpoint<PostPetApiRequest, Pet> {
+public class PutPetApiRequest extends PetApiEndpoint<PutPetApiRequest, Pet> {
     private Pet pet;
 
-    public PostPetApiRequest pet(Pet pet) {
+    public PutPetApiRequest pet(Pet pet) {
         this.pet = pet;
         return this;
     }
@@ -22,12 +22,11 @@ public class PostPetApiRequest extends PetApiEndpoint<PostPetApiRequest, Pet> {
     }
 
     @Override
-    public PostPetApiRequest sendRequest() {
-        response = getServiceApi()
-                .addPet()
-                .body(pet)
+    public PutPetApiRequest sendRequest() {
+        response = getServiceApi().updatePet().body(pet)
                 .execute(Function.identity());
-
+//        ResponseBody body = response.getBody();
+//        System.out.println(body.asString());
         return this;
     }
 
