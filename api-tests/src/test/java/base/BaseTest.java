@@ -8,6 +8,8 @@ import java.util.Arrays;
 
 public class BaseTest {
 
+    protected String photoUrl = "http://foo.bar.com/1";
+    protected String animal_name = "test";
 
     protected Pet getTestPet(String animal_name, Pet.StatusEnum status, String petCategory, String photoUrl) {
         return new Pet().id(TestUtils.nextId()).name(animal_name).status(status)

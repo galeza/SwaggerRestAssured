@@ -3,7 +3,11 @@ package pet_tests;
 import base.BaseTest;
 import fr.galeza.example.swagger.client.model.Category;
 import fr.galeza.example.swagger.client.model.Pet;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import requests.PostPetApiRequest;
 import requests.PutPetApiRequest;
 import util.TestUtils;
@@ -11,16 +15,23 @@ import util.TestUtils;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static util.Constants.GLOBAL_MESSAGE;
 
+@DisplayName("Update pet status: From PENDING to AVAILABLE and SOLD")
 public class PutPetTest extends BaseTest {
 
     private String category = "dog";
-    private String photoUrl = "http://foo.bar.com/1";
-    private String animal_name = "test";
 
-    @Test
-    public void updatePetNameAndStatus() {
-        Pet petToBeAddedWithAvailableStatus = getTestPet(animal_name, Pet.StatusEnum.AVAILABLE, category, photoUrl);
+
+    @ParameterizedTest
+    @EnumSource(
+            value = Pet.StatusEnum.class,
+            names = {"PENDING"},
+            mode = EnumSource.Mode.EXCLUDE)
+    @DisplayName("Wrapped assertions in assertAll must all pass but each failure will be reported separately")
+    public void updatePetNameAndStatus(Pet.StatusEnum status) {
+        Pet petToBeAddedWithAvailableStatus = getTestPet(animal_name, Pet.StatusEnum.PENDING, category, photoUrl);
 
         Pet createdPet = new PostPetApiRequest()
                 .pet(petToBeAddedWithAvailableStatus)
@@ -30,10 +41,12 @@ public class PutPetTest extends BaseTest {
 
         assertThat(createdPet.getId()).isEqualTo(petToBeAddedWithAvailableStatus.getId());
         createdPet.setName("Changed_name");
-        createdPet.setStatus(Pet.StatusEnum.SOLD);
+        createdPet.setStatus(status);
         Pet updatedPet = new PutPetApiRequest().pet(createdPet).sendRequest().assertRequestSuccess().getResponseModel();
-        assertThat(createdPet.getName()).isEqualTo(updatedPet.getName());
-        assertThat(updatedPet.getStatus()).isEqualTo(Pet.StatusEnum.SOLD);
+        assertAll(GLOBAL_MESSAGE,
+                () -> assertThat(createdPet.getName()).isEqualTo(updatedPet.getName()),
+                () -> assertThat(updatedPet.getStatus()).isEqualTo(status)
+        );
     }
 
 
