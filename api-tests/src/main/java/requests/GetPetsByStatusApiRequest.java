@@ -8,25 +8,25 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.function.Function;
 
-public class GetPetByStatusApiRequest extends PetApiEndpoint<GetPetByStatusApiRequest, List<Pet>>{
+public class GetPetsByStatusApiRequest extends PetApiEndpoint<GetPetsByStatusApiRequest, List<Pet>>{
 
-    private String petId;
+    private String petStatus;
 
-    public GetPetByStatusApiRequest pet(String petId) {
-        this.petId = petId;
+    public GetPetsByStatusApiRequest pet(String petStatus) {
+        this.petStatus = petStatus;
         return this;
     }
 
     @Override
     protected Type getModelType() {
-        return Pet.class;
+        return List.class;
     }
 
     @Override
-    public GetPetByStatusApiRequest sendRequest() {
+    public GetPetsByStatusApiRequest sendRequest() {
         response = getServiceApi()
-                .getPetById()
-                .petIdPath(petId)
+                .findPetsByStatus()
+                .statusQuery(petStatus)
                 .execute(Function.identity());
 
         return this;
