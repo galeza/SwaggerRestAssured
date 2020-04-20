@@ -1,6 +1,7 @@
 package pet_tests;
 import base.BaseTest;
 import fr.galeza.example.swagger.client.model.Pet;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import requests.GetPetApiRequest;
 import requests.PostPetApiRequest;
@@ -15,6 +16,7 @@ public class GetPetTests extends BaseTest {
         private String category = "cat";
 
     @Test
+    @Tag("Integration")
     public void getPetTest() {
         Pet petToBeCreated = getTestPet(animal_name, Pet.StatusEnum.AVAILABLE, category, photoUrl);
 

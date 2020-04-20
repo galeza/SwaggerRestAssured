@@ -1,23 +1,20 @@
 package pet_tests;
 
 import base.BaseTest;
-import fr.galeza.example.swagger.client.model.Category;
 import fr.galeza.example.swagger.client.model.Pet;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.Tag;
 import requests.DeletePetApiRequest;
 import requests.PostPetApiRequest;
-import util.TestUtils;
-
-import java.util.Arrays;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Tag("notToRun")
 public class DeletePetTests extends BaseTest {
 
     private String category = "cat";
 
     @Test
+    @Tag("notToRun")
     public void deletePetTest() {
         Pet petToBeDeleted = getTestPet(animal_name, Pet.StatusEnum.AVAILABLE, category, photoUrl);
 
