@@ -32,7 +32,7 @@
         <junit.platform.version>1.1.0</junit.platform.version>
         <junit.surefire.platform.version>1.2.0</junit.surefire.platform.version>
         <!--junit4-->
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <!--surefire plugin-->
         <thread.count>1</thread.count>
         <assertj.core.version>3.15.0</assertj.core.version>
